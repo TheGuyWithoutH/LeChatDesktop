@@ -11,12 +11,12 @@ const GoBackButton = ({ onLeave }: { onLeave?: () => Promise<void> }) => {
   return (
     <div
       className="fixed top-[20px] left-[20px] cursor-pointer"
-      style={{
-        position: "fixed",
-        top: "20px",
-        left: "20px",
-        cursor: "pointer",
-      }}
+      // style={{
+      //   position: "fixed",
+      //   top: "20px",
+      //   left: "20px",
+      //   cursor: "pointer",
+      // }}
       onClick={() => {
         if (onLeave) onLeave().then(() => router.back());
         else router.back();
