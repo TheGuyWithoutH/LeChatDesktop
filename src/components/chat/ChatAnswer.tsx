@@ -28,7 +28,7 @@ function ChatAnswer({
 }: {
   message: Content[];
   onRepeat?: () => void;
-  timestamp?: string;
+  timestamp?: Date;
 }) {
   const [hover, setHover] = useState(false);
   const text = message
@@ -54,7 +54,13 @@ function ChatAnswer({
           }`}
         >
           <p className="text-sm text-gray-400 text-right">
-            {timestamp ?? "15 March, 17:35"}
+            {`${timestamp?.toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+            })}, ${timestamp?.toLocaleTimeString("en-GB", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}`}
           </p>
           <Zap className="size-4 mx-4" />
           <Button

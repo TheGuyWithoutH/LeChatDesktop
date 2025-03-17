@@ -6,7 +6,7 @@ import { z } from "zod";
  * Mistral API client
  */
 export const mistral = new Mistral({
-  apiKey: process.env["MISTRAL_API_KEY"] ?? "",
+  apiKey: process.env.MISTRAL_API_KEY ?? "",
 });
 
 /**

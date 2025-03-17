@@ -18,7 +18,7 @@ function ChatBubble({
 }: {
   message: Content[];
   onEdit?: () => void;
-  timestamp?: string;
+  timestamp?: Date;
 }) {
   const [hover, setHover] = React.useState(false);
   const text = message
@@ -27,6 +27,8 @@ function ChatBubble({
   const files = message.filter(
     (content) => content.type === "image_url" || content.type === "document_url"
   );
+
+  console.log(timestamp);
 
   return (
     <div
@@ -90,7 +92,14 @@ function ChatBubble({
           <Copy />
         </Button>
         <p className="text-sm text-gray-400 text-right">
-          {timestamp ?? "15 March, 17:35"}
+          {/* display date with the following format: 15 March, 17:35 */}
+          {`${timestamp?.toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+          })}, ${timestamp?.toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}`}
         </p>
       </div>
     </div>

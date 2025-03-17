@@ -18,9 +18,19 @@ To copy the chat text, click on the "Copy" button. To quickly search for a chat,
 
 ## Installation
 
-To install the application, download the repository and run `npm install` in the root directory. Then, run `npm run build` and `npm run dev` to start the application.
+To install the application, download the repository and run `npm install` in the root directory.
+
+Then create a `.env` file in the root directory with the following content:
+
+```env
+MISTRAL_API_KEY=YOUR_API
+```
+
+Finally, run `npm run build` and `npm run dev` to start the application.
 
 ## Development
+
+Development time: 2 days
 
 This app is based on the [Next.js Electron example](https://medium.com/@aleksej.gudkov/how-to-build-an-electron-app-with-next-js-a-complete-guide-6f6ddf0111b2), and use Mistral's API for the chat.
 

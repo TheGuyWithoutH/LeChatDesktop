@@ -46,9 +46,21 @@ function ChatView({
         >
           {chat.messages.map((chat, index) => {
             if (chat.role === "user") {
-              return <ChatBubble key={index} message={chat.content} />;
+              return (
+                <ChatBubble
+                  key={index}
+                  message={chat.content}
+                  timestamp={new Date(chat.timestamp)}
+                />
+              );
             } else {
-              return <ChatAnswer key={index} message={chat.content} />;
+              return (
+                <ChatAnswer
+                  key={index}
+                  message={chat.content}
+                  timestamp={new Date(chat.timestamp)}
+                />
+              );
             }
           })}
           {incomingMessage && <ChatAnswer message={incomingMessage.content} />}

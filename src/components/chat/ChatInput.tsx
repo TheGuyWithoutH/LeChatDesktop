@@ -69,6 +69,7 @@ function ChatInputMistral({
     const compiledMessage = {
       role: "user",
       content: [...urlAttachments, { type: "text", text: message } as Content],
+      timestamp: new Date(),
     } as Message;
 
     setMessage("");
