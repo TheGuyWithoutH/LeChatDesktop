@@ -1,6 +1,6 @@
 # Le Chat Desktop 🪄
 
-Le Chat Desktop is a desktop application that allows users to quickly access Le Chat. With a single shortcut, users can open the application and begin chatting with the AI. They can also access the classical user interface to interact with the AI and see their prompt history.
+Le Chat Desktop is a desktop application written in **Electron + Next.JS + Tailwind CSS** that allows users to quickly access Le Chat. With a single shortcut, users can open the application and begin chatting with the AI. They can also access the classical user interface to interact with the AI and see their prompt history.
 
 ![Le Chat Desktop](docs/app.png)
 
@@ -14,7 +14,7 @@ To clear all chats, click on the "Clear All" button in the profile dropdown (sam
 
 To copy the chat text, click on the "Copy" button. 
 
-To trigger the quickl chat, press `Ctrl + Shift + I`.
+To trigger the **quick chat**, press `Ctrl + Shift + I`.
 
 ![Quick Search](docs/quick-search.png)
 
