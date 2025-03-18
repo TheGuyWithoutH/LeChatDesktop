@@ -117,6 +117,10 @@ app.on("ready", async () => {
     mainWindow.focus();
   });
 
+  ipcMain.on("app-quit", () => {
+    app.quit();
+  });
+
   // Load initial URLs
   mainWindow.loadURL(mainUrl);
   searchBarWindow.loadURL(searchUrl);

@@ -123,7 +123,7 @@ export function AppSidebar({
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => window.backend.quitApp()}>
                     <LogOut />
                     <span>Quit</span>
                   </DropdownMenuItem>

@@ -30,4 +30,5 @@ contextBridge.exposeInMainWorld("backend", {
   // IPC API for the window management.
   showMainWindow: (chatId: Chat) =>
     ipcRenderer.invoke("show-main-window", chatId),
+  quitApp: () => ipcRenderer.send("app-quit"),
 });
