@@ -7,8 +7,14 @@ import { useChat } from "../../hooks/chatHook";
  * Component representing the new chat page.
  */
 export default function Chat() {
-  const [chat, sendMessage, loading, incomingMessage, messagesEndRef] =
-    useChat();
+  const [
+    chat,
+    sendMessage,
+    loading,
+    incomingMessage,
+    messagesEndRef,
+    deleteMessage,
+  ] = useChat();
   return (
     <>
       <ChatView
@@ -17,6 +23,7 @@ export default function Chat() {
         incomingMessage={incomingMessage}
         sendMessage={sendMessage}
         messagesEndRef={messagesEndRef}
+        deleteMessage={deleteMessage}
       />
       <div className="absolute bottom-0 right-0 left-0 text-center p-2 mb-4 text-xs text-gray-400">
         Open the quick chat from anywhere in your computer by pressing{"  "}

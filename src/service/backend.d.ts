@@ -16,6 +16,7 @@ declare global {
       getChat: (id: string) => Promise<Chat>;
       deleteChat: (id: string) => Promise<void>;
       clearChats: () => Promise<void>;
+      showMainWindow: (chatId: string) => Promise<void>;
     };
   }
 }

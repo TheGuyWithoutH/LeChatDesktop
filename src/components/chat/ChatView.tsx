@@ -20,12 +20,14 @@ function ChatView({
   loading,
   incomingMessage,
   messagesEndRef,
+  deleteMessage,
 }: {
   chat: Chat;
   sendMessage: (message: Message) => void;
   loading: boolean;
   incomingMessage?: Message;
   messagesEndRef: React.RefObject<HTMLDivElement>;
+  deleteMessage: (index: number) => void;
 }) {
   if (!chat || chat.messages.length === 0) {
     return (
@@ -51,6 +53,7 @@ function ChatView({
                   key={index}
                   message={chat.content}
                   timestamp={new Date(chat.timestamp)}
+                  onDelete={() => deleteMessage(index)}
                 />
               );
             } else {
@@ -63,7 +66,12 @@ function ChatView({
               );
             }
           })}
-          {incomingMessage && <ChatAnswer message={incomingMessage.content} />}
+          {incomingMessage && (
+            <ChatAnswer
+              message={incomingMessage.content}
+              timestamp={new Date()}
+            />
+          )}
           <div ref={messagesEndRef} />
         </div>
         <div className="mt-auto w-full">

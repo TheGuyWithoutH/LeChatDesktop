@@ -14,8 +14,14 @@ export default function Chat({
   params: Promise<{ chatId: string }>;
 }) {
   const [chatId, setChatId] = useState<string | null>(null);
-  const [chat, sendMessage, loading, incomingMessage, messagesEndRef] =
-    useChat(chatId);
+  const [
+    chat,
+    sendMessage,
+    loading,
+    incomingMessage,
+    messagesEndRef,
+    deleteMessage,
+  ] = useChat(chatId);
 
   useEffect(() => {
     params.then(({ chatId }) => {
@@ -30,6 +36,7 @@ export default function Chat({
       incomingMessage={incomingMessage}
       sendMessage={sendMessage}
       messagesEndRef={messagesEndRef}
+      deleteMessage={deleteMessage}
     />
   );
 }

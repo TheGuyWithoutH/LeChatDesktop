@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Message from "../data/message";
 import { generateChatName, sendChatMessages } from "../service/mistral";
 import { useChatContext } from "../components/navigation/historyProvider";
+import index from "@guildplanner.pro/electron-next";
 
 /**
  * Custom hook to manage the chat state
@@ -15,6 +16,7 @@ const useChat = (chatId?: string) => {
   const [incomingMessage, setIncomingMessage] = useState<Message | null>(null);
   const { addNewChat } = useChatContext();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [initialScrollDone, setInitialScrollDone] = useState(false);
 
   useEffect(() => {
     // If a new chat was previously created and no messages were sent, delete the chat
@@ -29,6 +31,7 @@ const useChat = (chatId?: string) => {
         .getChat(chatId)
         .then((chat: Chat) => {
           console.log("getting chat", chat);
+          setInitialScrollDone(false);
           setChat(
             new Chat(chat.id, chat.name, chat.messages, chat.lastMessage)
           );
@@ -66,7 +69,15 @@ const useChat = (chatId?: string) => {
   }, [chat]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({
+      behavior: initialScrollDone ? "smooth" : "auto",
+    });
+
+    console.log("Scrolling to bottom", initialScrollDone);
+
+    if (!initialScrollDone) {
+      setInitialScrollDone(true);
+    }
   };
 
   useEffect(() => {
@@ -133,7 +144,24 @@ const useChat = (chatId?: string) => {
     );
   };
 
-  return [chat, sendMessage, loading, incomingMessage, messagesEndRef] as const;
+  const deleteMessage = (index: number) => {
+    if (chat === null) {
+      return;
+    }
+
+    const newChat = chat.clone();
+    newChat.messages.splice(index, 1);
+    updateChat(newChat);
+  };
+
+  return [
+    chat,
+    sendMessage,
+    loading,
+    incomingMessage,
+    messagesEndRef,
+    deleteMessage,
+  ] as const;
 };
 
 export { useChat };

@@ -31,6 +31,7 @@ function ChatAnswer({
   timestamp?: Date;
 }) {
   const [hover, setHover] = useState(false);
+  const [liked, setLiked] = useState<boolean | undefined>(undefined);
   const text = message
     .flatMap((content) => (content.type === "text" ? content.text : ""))
     .join("");
@@ -67,11 +68,17 @@ function ChatAnswer({
             size="icon"
             variant="ghost"
             className="ml-auto cursor-pointer"
+            onClick={() => setLiked(true)}
           >
-            <ThumbsUp />
+            {liked ? <ThumbsUp fill="black" /> : <ThumbsUp />}
           </Button>
-          <Button size="icon" variant="ghost" className="cursor-pointer">
-            <ThumbsDown />
+          <Button
+            size="icon"
+            variant="ghost"
+            className="cursor-pointer"
+            onClick={() => setLiked(false)}
+          >
+            {liked === false ? <ThumbsDown fill="black" /> : <ThumbsDown />}
           </Button>
           <Button size="icon" variant="ghost" className="cursor-pointer">
             <Repeat />

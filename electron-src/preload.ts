@@ -26,4 +26,8 @@ contextBridge.exposeInMainWorld("backend", {
   deleteChat: async (chatId: string) =>
     ipcRenderer.invoke("deleteChat", chatId),
   clearChats: async () => ipcRenderer.invoke("clearChats"),
+
+  // IPC API for the window management.
+  showMainWindow: (chatId: Chat) =>
+    ipcRenderer.invoke("show-main-window", chatId),
 });

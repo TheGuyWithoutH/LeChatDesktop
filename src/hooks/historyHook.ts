@@ -12,6 +12,7 @@ type ChatOverview = Partial<Chat>;
 const useHistory = () => {
   const [chats, setChats] = useState<ChatOverview[]>([]);
   const [currentChatId, setCurrentChatId] = useState<string | undefined>();
+  const [showSearch, setShowSearch] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -25,6 +26,7 @@ const useHistory = () => {
 
   useEffect(() => {
     console.log("Current chat ID", currentChatId);
+    setShowSearch(false);
   }, [currentChatId]);
 
   const addNewChat = (chat: ChatOverview) => {
@@ -70,7 +72,15 @@ const useHistory = () => {
     });
   };
 
-  return [chats, currentChatId, addNewChat, deleteChat, clearChats] as const;
+  return [
+    chats,
+    currentChatId,
+    addNewChat,
+    deleteChat,
+    clearChats,
+    showSearch,
+    setShowSearch,
+  ] as const;
 };
 
 export { useHistory };

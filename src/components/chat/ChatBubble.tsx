@@ -13,11 +13,11 @@ import { Content } from "../../data/message";
  */
 function ChatBubble({
   message,
-  onEdit,
+  onDelete,
   timestamp,
 }: {
   message: Content[];
-  onEdit?: () => void;
+  onDelete?: () => void;
   timestamp?: Date;
 }) {
   const [hover, setHover] = React.useState(false);
@@ -27,8 +27,6 @@ function ChatBubble({
   const files = message.filter(
     (content) => content.type === "image_url" || content.type === "document_url"
   );
-
-  console.log(timestamp);
 
   return (
     <div
@@ -81,7 +79,7 @@ function ChatBubble({
         <Button size="icon" variant="ghost">
           <Edit />
         </Button>
-        <Button size="icon" variant="ghost">
+        <Button size="icon" variant="ghost" onClick={onDelete}>
           <Trash />
         </Button>
         <Button

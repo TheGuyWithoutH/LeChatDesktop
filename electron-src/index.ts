@@ -9,7 +9,6 @@ import {
   ipcMain,
   IpcMainEvent,
   globalShortcut,
-  // Tray,
 } from "electron";
 import isDev from "electron-is-dev";
 import prepareNext from "electron-next";
@@ -17,29 +16,19 @@ import ipc from "./ipc";
 import { SchemaType } from "./store";
 import Store from "electron-store";
 
-/**
- * Main entry point for the Electron app.
- */
-
-let show = false;
-
-// Initialize IPC handlers
+// Initialize IPC handlers and store
 const store = new Store<SchemaType>();
 ipc.init(store);
 
-// Prepare the renderer once the app is ready
-app.on("ready", async () => {
-  await prepareNext("./");
+let mainWindow: BrowserWindow | null = null;
 
-  const icon = join(__dirname, "../public/mistral.png");
-
-  // Create the browser window for the app
-  const mainWindow = new BrowserWindow({
+// Helper to create the main window
+function createMainWindow(icon: string): BrowserWindow {
+  const win = new BrowserWindow({
     width: 1080,
     height: 720,
     center: true,
-    icon: icon,
-
+    icon,
     webPreferences: {
       nodeIntegration: false,
       sandbox: false,
@@ -47,9 +36,15 @@ app.on("ready", async () => {
       preload: join(__dirname, "preload.js"),
     },
   });
+  win.on("close", () => {
+    mainWindow = null;
+  });
+  return win;
+}
 
-  // Create the browser window for the quick search bar
-  const searchBarWindow = new BrowserWindow({
+// Helper to create the search bar window
+function createSearchBarWindow(): BrowserWindow {
+  return new BrowserWindow({
     width: 610,
     height: 680,
     frame: false,
@@ -59,7 +54,6 @@ app.on("ready", async () => {
     backgroundColor: "#00000000",
     alwaysOnTop: true,
     hasShadow: false,
-
     webPreferences: {
       nodeIntegration: false,
       sandbox: false,
@@ -67,9 +61,20 @@ app.on("ready", async () => {
       preload: join(__dirname, "preload.js"),
     },
   });
+}
 
+app.on("ready", async () => {
+  await prepareNext("./");
+
+  const icon = join(__dirname, "../public/mistral.png");
+
+  // Create main and search windows
+  mainWindow = createMainWindow(icon);
+  const searchBarWindow = createSearchBarWindow();
+
+  // Define URLs based on environment
   const mainUrl = isDev
-    ? "http://localhost:8000/"
+    ? "http://localhost:8000"
     : format({
         pathname: join(__dirname, "out/index.html"),
         protocol: "file:",
@@ -84,20 +89,35 @@ app.on("ready", async () => {
         slashes: true,
       });
 
-  // Register the global shortcut to show/hide the quick search bar
+  // Global shortcut for toggling search window visibility
   globalShortcut.register("CommandOrControl+Shift+I", () => {
-    if (!searchBarWindow) {
-      return;
-    }
-    if (show) {
+    if (searchBarWindow.isVisible()) {
       searchBarWindow.hide();
-      show = false;
     } else {
-      show = true;
       searchBarWindow.show();
     }
   });
 
+  // IPC handler to show the main window with an optional chatId
+  ipcMain.handle("show-main-window", async (_, chatId: string) => {
+    searchBarWindow.hide();
+
+    if (!mainWindow || mainWindow.isDestroyed()) {
+      mainWindow = createMainWindow(icon);
+    }
+
+    const urlWithChat =
+      chatId.length > 0 ? `${mainUrl}/chat/${chatId}` : mainUrl;
+    try {
+      await mainWindow.loadURL(urlWithChat);
+    } catch (error) {
+      console.error("Failed to load URL:", urlWithChat, error);
+    }
+    mainWindow.show();
+    mainWindow.focus();
+  });
+
+  // Load initial URLs
   mainWindow.loadURL(mainUrl);
   searchBarWindow.loadURL(searchUrl);
 });
@@ -105,12 +125,12 @@ app.on("ready", async () => {
 // Quit the app once all windows are closed
 app.on("window-all-closed", app.quit);
 
+// Unregister shortcuts on app quit
 app.on("will-quit", () => {
-  // Unregister all shortcuts.
   globalShortcut.unregisterAll();
 });
 
-// listen the channel `message` and resend the received message to the renderer process
+// Example IPC channel for testing messages
 ipcMain.on("message", (event: IpcMainEvent, message: any) => {
   console.log(message);
   setTimeout(() => event.sender.send("message", "hi from electron"), 500);

@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, Image, Paperclip } from "lucide-react";
+import { FileText, Image, Maximize2, Paperclip } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { ChatInput } from "../ui/chat/chat-input";
@@ -15,8 +15,10 @@ import { uploadFile } from "../../service/mistral";
  */
 function ChatInputMistral({
   sendMessage,
+  onOpenFullScreen,
 }: {
   sendMessage: (message: Message) => void;
+  onOpenFullScreen?: () => void;
 }) {
   const [message, setMessage] = React.useState("");
   const [attachments, setAttachments] = useState<File[]>([]);
@@ -26,7 +28,7 @@ function ChatInputMistral({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const newFiles = Array.from(e.target.files);
-      // Filtrer uniquement les fichiers PDF et images
+      // Filter only PDF and images files
       const validFiles = newFiles.filter(
         (file) =>
           file.type === "application/pdf" || file.type.startsWith("image/")
@@ -35,7 +37,7 @@ function ChatInputMistral({
       if (validFiles.length > 0) {
         setAttachments((prev) => [...prev, ...validFiles]);
 
-        // Uploader les fichiers
+        // Upload files
         const uploadPromises = validFiles.map(async (file) => {
           const url = await uploadFile(file);
           if (file.type === "application/pdf") {
@@ -50,7 +52,7 @@ function ChatInputMistral({
         });
       }
     }
-    // Réinitialiser l'input pour permettre de sélectionner le même fichier plusieurs fois
+    // Reinitialize input
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -148,6 +150,29 @@ function ChatInputMistral({
             <p>Coming soon...</p>
           </TooltipContent>
         </Tooltip>
+        {onOpenFullScreen && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="bg-accent cursor-pointer hover:bg-primary/10"
+                onClick={onOpenFullScreen}
+                disabled={attachments.length >= 5}
+                type="button"
+              >
+                <Maximize2 className="size-4" />
+                <span className="sr-only">Open Full Screen</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent
+              sideOffset={5}
+              className="bg-white p-2 rounded-lg color-primary text-black border-[0.5px] border-primary/10 shadow-sm"
+            >
+              <p>Open App</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
 
         {attachments.length > 0 && (
           <div

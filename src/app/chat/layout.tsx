@@ -17,12 +17,19 @@ export default function ChatLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [chats, currentChatId, addNewChat, deleteChat, clearChats] =
-    useHistory();
+  const [
+    chats,
+    currentChatId,
+    addNewChat,
+    deleteChat,
+    clearChats,
+    showSearch,
+    setShowSearch,
+  ] = useHistory();
 
   return (
     <SidebarProvider>
-      <Dialog>
+      <Dialog open={showSearch} onOpenChange={setShowSearch}>
         <AppSidebar
           onSearch={() => {}}
           conversations={chats}

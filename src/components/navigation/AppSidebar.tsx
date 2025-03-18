@@ -37,6 +37,7 @@ import { DialogTrigger } from "../ui/dialog";
 import Chat from "../../data/chat";
 import { Button } from "../ui/button";
 import { useState } from "react";
+import Link from "next/link";
 
 /**
  * Component representing the application sidebar.
@@ -147,10 +148,10 @@ export function AppSidebar({
                       : "cursor-pointer"
                   }`}
                 >
-                  <a href="/chat">
+                  <Link href="/chat">
                     <MessageSquarePlus />
                     <span>New Chat</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
@@ -214,7 +215,7 @@ function ConversationItem({ item, currentChatId, deleteChat }) {
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
-        <a href={`/chat/${item.id}`}>
+        <Link href={`/chat/${item.id}`}>
           <span>{item.name}</span>
           <Button
             size="icon"
@@ -230,7 +231,7 @@ function ConversationItem({ item, currentChatId, deleteChat }) {
           >
             <Trash2 />
           </Button>
-        </a>
+        </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );

@@ -4,6 +4,7 @@ import { Textarea } from "../ui/textarea";
 import { Search } from "lucide-react";
 import { Separator } from "../ui/separator";
 import Chat from "../../data/chat";
+import Link from "next/link";
 
 /**
  * Component representing the search dialog.
@@ -40,13 +41,13 @@ function SearchDialog({ chats }: { chats: Partial<Chat>[] }) {
       <Separator className="m-0 p-0 w-full" />
       <div className="min-h-50 max-h-70 flex flex-col gap-2 p-2">
         {searchResults.map((chat) => (
-          <a
+          <Link
             href={`/chat/${chat.id}`}
             key={chat.id}
             className="p-2 hover:bg-primary/5 w-full rounded-lg"
           >
             {chat.name}
-          </a>
+          </Link>
         ))}
       </div>
     </DialogContent>
