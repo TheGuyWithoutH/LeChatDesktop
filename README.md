@@ -28,6 +28,26 @@ MISTRAL_API_KEY=YOUR_API
 
 Finally, run `npm run build` and `npm run dev` to start the application.
 
+Complete scripts:
+
+```bash
+echo "Cloning the repository..."
+git clone git@github.com:TheGuyWithoutH/LeChatDesktop.git
+
+echo "Installing dependencies..."
+cd LeChatDesktop
+npm install
+
+echo "Creating the .env file..."
+echo "MISTRAL_API_KEY=[YOUR_API]" > .env
+
+echo "Building the application..."
+npm run build
+
+echo "Starting the application..."
+npm run dev
+```
+
 ## Development
 
 Development time: 2 days
